@@ -12,10 +12,10 @@ import './style.css'
 const Register = () => {
 
     const[formData, setFormData] = useState({
-        username: '',
-        email:  '',
-        password: '',
-        confirmpassword: '',
+        username: 'Sander',
+        email:  'sander@sander.com',
+        password: 'sander123',
+        confirmpassword: 'sander123',
         success: false,
         error: false,
         loading: false
@@ -51,15 +51,34 @@ const Register = () => {
                 ...formData, error: 'Wachtwoorden komen niet overeen'
             })
         } else {
-            setFormData({
-                ...formData,
-                success: 'Account is aangemaakt'
-            })
+            const { username, email, password } = formData;
+            const data = { username, email, password };
 
+            setFormData({...formData, loading: true}); 
+
+            RegisterApi(data)
+                .then(response => {
+                    console.log(response);
+                    setFormData({
+                        username: '',
+                        email: '',
+                        password: '',
+                        confirmpassword:'',
+                        success: true,
+                        error: false,
+                        loading: false
+                
+                    });
+
+                })
+
+                .catch (err => {
+                    console.log('Axios register error: ', err);
+                });
         }
 
 
-    }
+    };
 
     const RegisterForm = () => (
         <div className="sign-up form" onSubmit={handleSubmit}>
